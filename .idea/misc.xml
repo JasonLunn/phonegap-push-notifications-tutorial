@@ -3,13 +3,6 @@
   <component name="CopyrightManager" default="">
     <module2copyright />
   </component>
-  <component name="GradleLocalSettings">
-    <option name="modificationStamps">
-      <map>
-        <entry key="$USER_HOME$/git/HyprMX-Android-Private" value="1387817723000" />
-      </map>
-    </option>
-  </component>
   <component name="GroovyCompilerConfiguration">
     <option name="invokeDynamic" value="true" />
   </component>
@@ -32,9 +25,6 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true">
     <output url="file://$PROJECT_DIR$/out" />
-  </component>
-  <component name="SvnConfiguration" myUseAcceleration="nothing">
-    <configuration>$USER_HOME$/.subversion</configuration>
   </component>
   <component name="masterDetails">
     <states>
