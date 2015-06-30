@@ -18,32 +18,66 @@
  */
 var app = {
     // Application Constructor
-    initialize: function() {
+    initialize: function () {
         this.bindEvents();
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+    bindEvents: function () {
+        document.addEventListener( 'deviceready', this.onDeviceReady, false );
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+    onDeviceReady: function () {
+        app.receivedEvent( 'deviceready' );
+        try {
+            pushNotification = window.plugins.pushNotification;
+            $( "#app-status-ul" ).append( '<li>registering ' + device.platform + '</li>' );
+            if ( device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
+                pushNotification.register( app.successHandler, app.errorHandler, {
+                    "senderID": "661780372179",
+                    "ecb": "onNotification"
+                } );	// required!
+            } else {
+                pushNotification.register( app.tokenHandler, app.errorHandler, {
+                    "badge": "true",
+                    "sound": "true",
+                    "alert": "true",
+                    "ecb": "onNotificationAPN"
+                } );	// required!
+            }
+        } catch ( error ) {
+            var text = "There was an error on this page.\n\n";
+            text += "Error description: " + error.message + "\n\n";
+            alert( text );
+        }
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+    receivedEvent: function ( id ) {
+        var parentElement = document.getElementById( id );
+        var listeningElement = parentElement.querySelector( '.listening' );
+        var receivedElement = parentElement.querySelector( '.received' );
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        listeningElement.setAttribute( 'style', 'display:none;' );
+        receivedElement.setAttribute( 'style', 'display:block;' );
 
-        console.log('Received Event: ' + id);
+        console.log( 'Received Event: ' + id );
+    },
+    tokenHandler: function ( result ) {
+        $( "#app-status-ul" ).append( '<li>token: ' + result +'</li>');
+        // Your iOS push server needs to know the token before it can push to this device
+        // here is where you might want to send it the token for later use.
+    },
+
+    successHandler: function ( result ) {
+        $( "#app-status-ul" ).append( '<li>success:' + result + '</li>' );
+    },
+
+    errorHandler: function ( error ) {
+        $( "#app-status-ul" ).append( '<li>error:' + error + '</li>' );
     }
 };
